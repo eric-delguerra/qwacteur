@@ -1,0 +1,42 @@
+#Coins{
+    text-align: center;
+}
+
+#divCoins{
+    border-radius: 50px;
+}
+
+#SubACoin{
+    color: #f06949;
+    border-color: #f06949;
+    margin-top: -10px;
+}
+
+#SubACoin:hover{
+    background-color: #f06949;
+    color: white;
+}
+
+#coinsDate{
+    text-align: right;
+    color: #f06949;
+    font-size: 0.75rem;
+}
+
+#coinsButton{
+    border-radius: 50px;
+    background-color: #f06949;
+    color: white;
+    left: 1.5rem;
+}
+
+#coinsButton:hover{
+    background-color: white;
+    color: #f06949;
+
+}
+
+#lastCoin{
+    margin-bottom: 20px;
+    box-shadow: #00c4a7;
+}
