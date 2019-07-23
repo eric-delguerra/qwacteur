@@ -6,49 +6,43 @@
         <form action="{{ path('Content') }}" method="post">
             <br>
             <div>
-                <label for="content">Nouveau coincoin</label>
+                <label for="content"></label>
                 <textarea name="content" id="content" class="textarea is-success column is-two-fifths"
-                          required minlength="5"></textarea>
+                          required minlength="5" style="text-align: center; font-size: 2rem"
+                          placeholder="Envie de Coincoin ? Dis le nous !"></textarea>
             </div>
             <br>
             <input type="submit" value="Pose ton CoinCoin" class="button is-rounded is-fullwidth" id="SubACoin">
         </form>
     </div>
-    {% for content in contents %}
-{#        <div class="container is-fluid">#}
-{#            <div class="column is-half is-offset-one-quarter">#}
-{#                <div class="notification" style="background-color: #caf7d4;" id="divCoins">#}
-{#                    <p id="Coins">{{ content.content }}</p>#}
-{#                    <img src="{{ asset('dist/imgs/ducky.png') }}" alt="" style="max-height: 50px;">#}
-{#                    <p class="is-size-7" id="coinsDate">{{ content.getCreatedAt|date('Y-m-d H:i:s') }}</p>#}
-{#                    <a href="" class="button is-small" id="coinsButton">Répondre</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-        <div class="container" id="lastCoin">
-            <div class="card column is-half is-offset-one-quarter">
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-48x48">
-                                <img src="https://cdn-media.rtl.fr/cache/kI0jBeCiI_M-HHVSqgW-TA/880v587-0/online/image/2018/0802/7794304883_l-extraterrestre-de-la-serie-alf.jpg" alt="Placeholder image" style="border-radius: 10px; min-height: 3rem">
-                            </figure>
-                        </div>
-                        <div class="media-content">
-                            <p class="title is-4">John Smith</p>
-                            <p class="subtitle is-6">@johnsmith</p>
-                        </div>
-                    </div>
 
-                    <div class="content" >
-                        {{ content.content }}
-                        <br>
-                        <p id="coinsDate" class="is-small">{{ content.getCreatedAt|date('Y-m-d H:i:s') }}</p>
+    {% if count < 10 %}
+        {% for content in contents %}
+            <div class="container" id="lastCoin">
+                <div class="card column is-half is-offset-one-quarter">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="https://cdn-media.rtl.fr/cache/kI0jBeCiI_M-HHVSqgW-TA/880v587-0/online/image/2018/0802/7794304883_l-extraterrestre-de-la-serie-alf.jpg"
+                                         alt="Placeholder image" style="border-radius: 10px; min-height: 3rem">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">John Smith</p>
+                                <p class="subtitle is-6">@johnsmith</p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            {{ content.content }}
+                            <br>
+                            <p id="coinsDate" class="is-small">{{ content.getCreatedAt|date('Y-m-d H:i:s') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-
-    {% endfor %}
+            {{ count+1 }}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

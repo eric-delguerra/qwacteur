@@ -43,7 +43,8 @@ class ContentController extends AbstractController
 
 
         return new Response($this->twig->render('home.html.twig', [
-            'contents' => $contents
+            'contents' => $contents,
+            'count' => 1
         ]));
     }
 
@@ -52,9 +53,7 @@ class ContentController extends AbstractController
      * @param Request $request
      * @param ValidatorInterface $validator
      * @return Response
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
+     * @throws \Exception
      */
     public function CreateContent(Request $request, ValidatorInterface $validator): Response
     {
@@ -70,13 +69,12 @@ class ContentController extends AbstractController
         $entityManager->persist($content);
         $entityManager->flush();
 
-        $contents = $this->getDoctrine()->getRepository(Content::class)->findAll();
 
         $errors = $validator->validate($content);
         if (count($errors) > 0) {
             return new Response((string)$errors, 400);
         } else {
-            return $this->index();
+            return $this->redirectToRoute('Home');
         }
     }
 
