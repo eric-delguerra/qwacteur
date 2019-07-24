@@ -41,3 +41,26 @@
     margin-bottom: 20px;
     box-shadow: #00c4a7;
 }
+
+.post{
+    box-shadow: 0 2px 3px rgb(28, 206, 28), 0 0 0 2px rgba(227, 136, 12, 0.84);
+}
+input::placeholder {
+    color: #c3ff7d;
+    font-size: 1.5em;
+}
+
+.nav-but{
+    background-color: #f06949;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+.nav-but:hover{
+    background-color: white;
+    color: #f06949;
+}
+
+#formulaire{
+    margin-bottom: 4rem;
+}

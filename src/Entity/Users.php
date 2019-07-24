@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -49,7 +51,20 @@ class Users implements UserInterface
      */
     private $password;
 
-    private $roles;
+    /**
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles = array();
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Content", mappedBy="author")
+     */
+    private $contents;
+
+    public function __construct()
+    {
+        $this->contents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,11 +155,17 @@ class Users implements UserInterface
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return void (Role|string)[] The user roles
+     * @return array (Role|string)[] The user roles
      */
-    public function getRoles()
-    {
-        return $this->roles->toArray();
+    public function getRoles(): array {
+        if (empty($this->roles)) {
+            return ['ROLE_USER'];
+        }
+        return $this->roles;
+    }
+
+    function addRole($role) {
+        $this->roles[] = $role;
     }
 
     /**
@@ -178,5 +199,36 @@ class Users implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getContents(): Collection
+    {
+        return $this->contents;
+    }
+
+    public function addContent(Content $content): self
+    {
+        if (!$this->contents->contains($content)) {
+            $this->contents[] = $content;
+            $content->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContent(Content $content): self
+    {
+        if ($this->contents->contains($content)) {
+            $this->contents->removeElement($content);
+            // set the owning side to null (unless already changed)
+            if ($content->getAuthor() === $this) {
+                $content->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 }

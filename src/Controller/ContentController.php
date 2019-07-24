@@ -41,10 +41,8 @@ class ContentController extends AbstractController
         $contents = $this->getDoctrine()->getRepository(Content::class)->findAll();
         $contents = array_reverse($contents);
 
-
         return new Response($this->twig->render('home.html.twig', [
-            'contents' => $contents,
-            'count' => 1
+            'contents' => $contents
         ]));
     }
 
@@ -62,13 +60,24 @@ class ContentController extends AbstractController
 
         $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
         $newContent = $request->get('content');
+        $parent = $request->get('parent');
         $content = new Content();
+
+
+//        dd($parent);
+        $user = $this->getUser();
+        $content->setAuthor($user);
         $content->setContent($newContent);
         $content->setCreatedAt($date);
+        if ($parent == null){
+            $content->setParent(0);
+        } else {
+            $content->setParent($parent);
+        }
+
 
         $entityManager->persist($content);
         $entityManager->flush();
-
 
         $errors = $validator->validate($content);
         if (count($errors) > 0) {
@@ -78,9 +87,21 @@ class ContentController extends AbstractController
         }
     }
 
+    /**
+     * @param $id
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @Route("/comment/{id}", name="commentaire")
+     */
     public function show($id)
     {
+        $contents = $this->getDoctrine()->getRepository(Content::class)->findAll();
         $content = $this->getDoctrine()->getRepository(Content::class)->find($id);
-        return new Response('Check out : ' . $content->getContent());
+        return new Response($this->twig->render('content/comment.html.twig', [
+            'content' => $content,
+            'contents' => $contents
+        ]));
     }
 }

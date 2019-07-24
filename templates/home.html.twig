@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-    <div class="column is-half is-offset-one-quarter">
-
+    <div class="column is-half is-offset-one-quarter" id="formulaire">
         <form action="{{ path('Content') }}" method="post">
             <br>
             <div>
@@ -15,34 +14,89 @@
             <input type="submit" value="Pose ton CoinCoin" class="button is-rounded is-fullwidth" id="SubACoin">
         </form>
     </div>
-
-    {% if count < 10 %}
-        {% for content in contents %}
+    {% for content in contents %}
+        {% if content.parent == 0 %}
             <div class="container" id="lastCoin">
-                <div class="card column is-half is-offset-one-quarter">
+                <div class="card column is-half is-offset-one-quarter post">
+                    <div class="column is-offset-10" style="height: 24px;">
+                        <a href="{{ path('commentaire',{'id': content.id}) }}">
+                            <img src="{{ asset('dist/imgs/shooting.svg') }}" alt="go to comment"
+                                 class="image is-24x24">
+                        </a>
+                    </div>
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img src="https://cdn-media.rtl.fr/cache/kI0jBeCiI_M-HHVSqgW-TA/880v587-0/online/image/2018/0802/7794304883_l-extraterrestre-de-la-serie-alf.jpg"
-                                         alt="Placeholder image" style="border-radius: 10px; min-height: 3rem">
+                                    {% if content.author.picture %}
+                                        <img src="{{ content.author.picture }}" alt="Placeholder image"
+                                             style="border-radius: 10px; min-height: 3rem">
+                                    {% else %}
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbXaq_lCQk5x5PlW8a2ZIlgjLqt9e-TUZQWmGh3t7V1Kij7pZFjg"
+                                             alt="Default" style="border-radius: 10px; min-height: 3rem">
+                                    {% endif %}
                                 </figure>
                             </div>
                             <div class="media-content">
-                                <p class="title is-4">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
+                                <p class="title is-4">{{ content.author.name }}</p>
+                                <p class="subtitle is-6">@{{ content.author.duckName }}</p>
                             </div>
                         </div>
 
-                        <div class="content">
+                        <div class="content" style="text-align: center; font-size: 2.5rem;">
                             {{ content.content }}
                             <br>
                             <p id="coinsDate" class="is-small">{{ content.getCreatedAt|date('Y-m-d H:i:s') }}</p>
                         </div>
                     </div>
+                    {% for com in contents %}
+                        {% if content.id == com.parent %}
+                            <div class="container" id="lastCoin">
+                                <div class="card column is-three-fifths is-offset-6 post">
+                                    <div class="card-content">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <figure class="image is-32x32" style="top: 0.25rem;">
+                                                    {% if com.author.picture %}
+                                                        <img src="{{ com.author.picture }}" alt="Placeholder image"
+                                                             style="border-radius: 10px; ">
+                                                    {% else %}
+                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbXaq_lCQk5x5PlW8a2ZIlgjLqt9e-TUZQWmGh3t7V1Kij7pZFjg"
+                                                             alt="Default" style="border-radius: 10px;">
+                                                    {% endif %}
+                                                </figure>
+                                            </div>
+                                            <div class="media-content">
+                                                <p class="subtitle is-8">{{ com.author.duckName }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="content">
+                                            {{ com.content }}
+                                            <br>
+                                            <p id="coinsDate"
+                                               class="is-small">{{ com.getCreatedAt|date('Y-m-d H:i:s') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div >
+                        <img src="{{ asset('/dist/imgs/arrow.png') }}" alt="arrow" style="left: -3rem;" >
+                    </div>
+                    <div class="field">
+                        <form action="{{ path('Content') }}" method="post">
+                            <div class="control">
+                                <input type="hidden" value="{{ content.id }}" name="parent">
+                                <input class="input is-success is-rounded" type="text" placeholder="Coinmentaire"
+                                       style="text-align: center;" name="content">
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
             </div>
-            {{ count+1 }}
-        {% endfor %}
-    {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}

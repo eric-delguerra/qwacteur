@@ -3,7 +3,3 @@
 #    controller: App\Controller\DefaultController::index
 
 
-FindContent:
-  path: /content/{id}
-  controller: App\Controller\ContentController::show
-
