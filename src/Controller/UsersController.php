@@ -54,6 +54,8 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}", name="users_show", methods={"GET"})
+     * @param Users $user
+     * @return Response
      */
     public function show(Users $user): Response
     {
@@ -64,6 +66,9 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="users_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Users $user
+     * @return Response
      */
     public function edit(Request $request, Users $user): Response
     {

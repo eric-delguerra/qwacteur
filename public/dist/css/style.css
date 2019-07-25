@@ -5,6 +5,19 @@
 #divCoins{
     border-radius: 50px;
 }
+#content{
+    background: white;
+    transition-duration: 0.4s;
+}
+
+/*#content:hover{*/
+/*    background-color: #aff7b7;*/
+/*}*/
+#content:focus{
+    background: rgba(175, 247, 183, 0.37);
+    border-color: rgba(175, 247, 183, 0.37);
+    border-radius: 20px;
+}
 
 #SubACoin{
     color: #f06949;
@@ -38,7 +51,7 @@
 }
 
 #lastCoin{
-    margin-bottom: 20px;
+    margin-bottom: 4rem;
     box-shadow: #00c4a7;
 }
 
@@ -63,4 +76,29 @@ input::placeholder {
 
 #formulaire{
     margin-bottom: 4rem;
+}
+
+.show{
+    background-color: #82fffa;
+    color: black;
+    transition-duration: 0.4s;
+}
+
+.show:hover{
+    background-color: #2fd8ff;
+}
+
+.edit{
+    background-color: #aff7b7;
+    color: black;
+    transition-duration: 0.4s;
+}
+
+.edit:hover{
+    background-color: #37cb72;
+    color: black;
+}
+
+.is-orange{
+    color: #f06949;
 }

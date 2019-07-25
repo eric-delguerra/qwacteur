@@ -3,11 +3,18 @@
 {% block title %}Edit Users{% endblock %}
 
 {% block body %}
-    <h1>Edit Users</h1>
+    <div class="columns" style="margin-top: 5rem;">
+        <div class="column is-offset-one-quarter ">
+            <h1 class="title is-1">Edit Users</h1>
+            <div class="column">
+                {{ include('users/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+            <div class="column" style="margin-bottom: 1rem">
+                {{ include('users/_delete_form.html.twig') }}
+            </div>
 
-    {{ include('users/_form.html.twig', {'button_label': 'Update'}) }}
+            <a href="{{ path('users_index') }}"><input type="submit" value="Revenir au utilisateurs" id="SubACoin" class="button is-rounded"></a>
+        </div>
+    </div>
 
-    <a href="{{ path('users_index') }}">back to list</a>
-
-    {{ include('users/_delete_form.html.twig') }}
 {% endblock %}

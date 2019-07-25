@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Content;
 use DateTime;
 use DateTimeZone;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,7 +98,7 @@ class ContentController extends AbstractController
      */
     public function show($id)
     {
-        $contents = $this->getDoctrine()->getRepository(Content::class)->findAll();
+        $contents = $this->getDoctrine()->getRepository(Content::class)->findChildren($id);
         $content = $this->getDoctrine()->getRepository(Content::class)->find($id);
         return new Response($this->twig->render('content/comment.html.twig', [
             'content' => $content,

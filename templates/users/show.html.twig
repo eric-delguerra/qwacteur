@@ -3,10 +3,11 @@
 {% block title %}Users{% endblock %}
 
 {% block body %}
-    <h1>Users</h1>
+    <div style="margin-top: 5rem" class="columns">
+        <h1 class="title is-1">Users</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ user.id }}</td>
@@ -35,12 +36,14 @@
                 <th>Password</th>
                 <td>{{ user.password }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('users_index') }}">back to list</a>
+        <a href="{{ path('users_index') }}">back to list</a>
 
-    <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
+        <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
 
-    {{ include('users/_delete_form.html.twig') }}
+        {{ include('users/_delete_form.html.twig') }}
+    </div>
+
 {% endblock %}

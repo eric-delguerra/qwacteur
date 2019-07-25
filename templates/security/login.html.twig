@@ -3,41 +3,45 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    {% if app.user %}
-<div class="checkbox mb-3">You are logged in as {{ app.user.duckName }}, <a href="{{ path('app_logout') }}">Logout</a> </div>
-    {% else %}
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    <div class="container" style="margin-top: 5rem">
+        <div class="columns">
+            {% if app.user %}
+                <div class="checkbox mb-3">You are logged in as {{ app.user.duckName }}, <a href="{{ path('app_logout') }}">Logout</a> </div>
+            {% else %}
+                <form method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+
+                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <label for="inputMail" class="sr-only">Mail</label>
+                    <input type="text" value="{{ last_username }}" name="mail" id="inputMail" class="button is-rounded"
+                           placeholder="Mail" required autofocus>
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="button is-rounded" placeholder="Password"
+                           required>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+
+                    {#
+                        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                        See https://symfony.com/doc/current/security/remember_me.html
+
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me"> Remember me
+                            </label>
+                        </div>
+                    #}
+
+                    <button class="button is-rounded" type="submit">
+                        Sign in
+                    </button>
+                </form>
             {% endif %}
-
-
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputMail" class="sr-only">Mail</label>
-            <input type="text" value="{{ last_username }}" name="mail" id="inputMail" class="form-control"
-                   placeholder="Mail" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
-                   required>
-
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-
-            {#
-                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                See https://symfony.com/doc/current/security/remember_me.html
-
-                <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" name="_remember_me"> Remember me
-                    </label>
-                </div>
-            #}
-
-            <button class="btn btn-lg btn-primary" type="submit">
-                Sign in
-            </button>
-        </form>
-    {% endif %}
+        </div>
+    </div>
     {% endblock %}

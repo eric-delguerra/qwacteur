@@ -3,9 +3,11 @@
 {% block title %}New Users{% endblock %}
 
 {% block body %}
-    <h1>Create new Users</h1>
+    <div style="margin-top: 5rem">
+        <h1>Create new Users</h1>
 
-    {{ include('users/_form.html.twig') }}
+        {{ include('users/_form.html.twig') }}
 
-    <a href="{{ path('users_index') }}">back to list</a>
+        <a href="{{ path('users_index') }}"><input type="submit" value="Revenir au utilisateurs"></a>
+    </div>
 {% endblock %}

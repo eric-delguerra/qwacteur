@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-
+{% if app.user %}
     <div class="column is-half is-offset-one-quarter" id="formulaire">
         <form action="{{ path('Content') }}" method="post">
             <br>
@@ -14,16 +14,23 @@
             <input type="submit" value="Pose ton CoinCoin" class="button is-rounded is-fullwidth" id="SubACoin">
         </form>
     </div>
+    {% endif %}
     {% for content in contents %}
         {% if content.parent == 0 %}
-            <div class="container" id="lastCoin">
+            <div class="container" id="lastCoin" style="top: 5rem">
                 <div class="card column is-half is-offset-one-quarter post">
-                    <div class="column is-offset-10" style="height: 24px;">
+                    <div class="column is-mobile is-offset-11" style="height: 24px;">
                         <a href="{{ path('commentaire',{'id': content.id}) }}">
                             <img src="{{ asset('dist/imgs/shooting.svg') }}" alt="go to comment"
                                  class="image is-24x24">
                         </a>
+
+                        <img src="{{ asset('dist/imgs/coment.svg') }}" alt="go to comment"
+                             class="image is-24x24" style="color: #000;" id="{{ content.id }}">
+
                     </div>
+
+
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
@@ -82,21 +89,32 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <div >
-                        <img src="{{ asset('/dist/imgs/arrow.png') }}" alt="arrow" style="left: -3rem;" >
+                    {% if app.user %}
+                    <div>
+                        <img src="{{ asset('/dist/imgs/arrow.png') }}" alt="arrow" style="left: -3rem;">
                     </div>
                     <div class="field">
                         <form action="{{ path('Content') }}" method="post">
                             <div class="control">
                                 <input type="hidden" value="{{ content.id }}" name="parent">
-                                <input class="input is-success is-rounded" type="text" placeholder="Coinmentaire"
-                                       style="text-align: center;" name="content">
+                                <input class="input is-success is-rounded " type="text" placeholder="Coinmentaire"
+                                       style="text-align: center;" name="content" id="{{ content.id }}">
                             </div>
                         </form>
 
                     </div>
+                        {% endif %}
                 </div>
             </div>
         {% endif %}
     {% endfor %}
+    <script>
+        $(document).ready(function () {
+            $('img').on('click', () => {
+                let id = $(this).getAttribute("id");
+                console.log(id)
+                $('input #' + id).focus()
+            })
+        })
+    </script>
 {% endblock %}
