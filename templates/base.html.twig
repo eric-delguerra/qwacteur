@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css">
     <link rel="stylesheet" href="{{ asset('dist/css/style.css') }}">
     {% block stylesheets %}{% endblock %}
@@ -12,7 +13,7 @@
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" style="background-color: transparent">
     <div class="navbar-brand is-offset-one-quarter ">
         <a class="navbar-item" href="{{ path('Home') }}">
-            <img src="{{ asset('dist/imgs/logoDuck.png') }}"  style="max-height: 5rem;" alt="logo">
+            <img src="{{ asset('dist/imgs/logoDuck.png') }}" style="max-height: 5rem;" alt="logo">
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
            data-target="navbarBasicExample">
@@ -24,17 +25,25 @@
     <div class="navbar-menu">
         <div class="navbar-end">
             <div class="navbar-item">
-                {%  if app.user %}
-                <img src="{{ app.user.picture }}" alt="profile picture" class="image is-32x32" style="border-radius: 10px; margin-right: 0.7rem">
-                {% endif %}
-                <div class="buttons">
-                    <a class="button is-rounded nav-but">
-                        {%  if app.user %}
-                            <strong>{{ app.user.duckName|upper }}</strong>
-                        {% else %}
-                            <strong>Sign up</strong>
-                        {% endif %}
+                {% if app.user %}
+                    <a href="{{ path('users_show', {'id': app.user.id}) }}">
+                    {% if app.user.picture %}
+                        <img src="{{ app.user.picture }}" alt="profile picture" class="image is-32x32"
+                             style="border-radius: 10px; margin-right: 0.7rem">
+                    {% else %}
+                        <img src="{{ asset('dist/imgs/default.png') }}" alt="profile picture" class="image is-32x32"
+                             style="border-radius: 10px; margin-right: 0.7rem">
+                    {% endif %}
                     </a>
+                <div>
+                    <a class="button is-rounded nav-but" href="{{ path('users_show', {'id': app.user.id}) }}">
+                            <strong>{{ app.user.duckName|upper }}</strong>
+                        </a>
+                    {% else %}
+                        <a class="button is-rounded nav-but" href="{{ path('users_new') }}">
+                            <strong>Sign up</strong>
+                        </a>
+                    {% endif %}
                     {% if app.user %}
                         <a href="{{ path('app_logout') }}" class="button is-rounded nav-but">
                             Log out
@@ -49,6 +58,22 @@
         </div>
     </div>
 </nav>
+<div style="height: 6rem;">
+    {% if app.flashes %}
+        <section class="hero" style="text-align: center; background-color: rgba(240,105,73,0.7) ">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        Post supprimé
+                    </h1>
+                    <h2 class="subtitle">
+                        Vous venez de supprimer votre post.
+                    </h2>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+</div>
 <script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -57,6 +82,12 @@
 {% block javascripts %}{% endblock %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+
+        $('section.hero').fadeIn(1500)
+        setTimeout(function () {
+            $('section.hero').fadeOut(1500)
+        }, 2000)
+
         // Get all "navbar-burger" elements
         const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 

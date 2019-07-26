@@ -51,7 +51,7 @@
 }
 
 #lastCoin{
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
     box-shadow: #00c4a7;
 }
 
@@ -95,10 +95,15 @@ input::placeholder {
 }
 
 .edit:hover{
-    background-color: #37cb72;
+    background-color: #3add81;
     color: black;
 }
 
 .is-orange{
     color: #f06949;
+}
+
+.profile {
+    /*border: solid black;*/
+    box-shadow: 0 2px 3px rgb(28, 206, 28), 0 0 0 2px rgba(227, 136, 12, 0.84);
 }

@@ -1,47 +1,53 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-{% if app.user %}
-    <div class="column is-half is-offset-one-quarter" id="formulaire">
-        <form action="{{ path('Content') }}" method="post">
-            <br>
-            <div>
-                <label for="content"></label>
-                <textarea name="content" id="content" class="textarea is-success column is-two-fifths"
-                          required minlength="5" style="text-align: center; font-size: 2rem"
-                          placeholder="Envie de Coincoin ? Dis le nous !"></textarea>
-            </div>
-            <br>
-            <input type="submit" value="Pose ton CoinCoin" class="button is-rounded is-fullwidth" id="SubACoin">
-        </form>
-    </div>
+    {% if app.user %}
+        <div class="column is-half is-offset-one-quarter" id="formulaire">
+            <form action="{{ path('Content') }}" method="post">
+                <br>
+                <div>
+                    <label for="content"></label>
+                    <textarea name="content" id="content" class="textarea is-success column is-two-fifths"
+                              required minlength="5" style="text-align: center; font-size: 2rem"
+                              placeholder="Envie de Coincoin ? Dis le nous !"></textarea>
+                </div>
+                <br>
+                <input type="submit" value="Pose ton CoinCoin" class="button is-rounded is-fullwidth" id="SubACoin">
+            </form>
+        </div>
     {% endif %}
     {% for content in contents %}
         {% if content.parent == 0 %}
-            <div class="container" id="lastCoin" style="top: 5rem">
+            <div class="container" id="lastCoin" style="top: 5rem; padding-bottom: 2rem">
                 <div class="card column is-half is-offset-one-quarter post">
-                    <div class="column is-mobile is-offset-11" style="height: 24px;">
+                    <div class="column is-offset-11" style="height: 24px;">
                         <a href="{{ path('commentaire',{'id': content.id}) }}">
                             <img src="{{ asset('dist/imgs/shooting.svg') }}" alt="go to comment"
                                  class="image is-24x24">
                         </a>
-
-                        <img src="{{ asset('dist/imgs/coment.svg') }}" alt="go to comment"
-                             class="image is-24x24" style="color: #000;" id="{{ content.id }}">
-
+                        {% if app.user %}
+                            {#                            <img src="{{ asset('dist/imgs/coment.svg') }}" alt="go to comment"#}
+                            {#                                 class="image is-24x24" style="color: #000;" id="{{ content.id }}">#}
+                            {% if app.user.id == content.author.id %}
+                                <a href="{{ path('deleteComentaire',{'idContent': content.id}) }}">
+                                    <img src="{{ asset('dist/imgs/bin.svg') }}" alt="go to comment"
+                                         class="image is-24x24" style="top: 0.5rem;">
+                                </a>
+                            {% endif %}
+                        {% endif %}
                     </div>
-
-
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    {% if content.author.picture %}
-                                        <img src="{{ content.author.picture }}" alt="Placeholder image"
-                                             style="border-radius: 10px; min-height: 3rem">
-                                    {% else %}
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbXaq_lCQk5x5PlW8a2ZIlgjLqt9e-TUZQWmGh3t7V1Kij7pZFjg"
-                                             alt="Default" style="border-radius: 10px; min-height: 3rem">
-                                    {% endif %}
+                                    <a href="{{ path('users_show', {'id': content.author.id}) }}">
+                                        {% if content.author.picture %}
+                                            <img src="{{ content.author.picture }}" alt="Placeholder image"
+                                                 style="border-radius: 10px; min-height: 3rem">
+                                        {% else %}
+                                            <img src="{{ asset('dist/imgs/default.png') }}"
+                                                 alt="Default" style="border-radius: 10px; min-height: 3rem">
+                                        {% endif %}
+                                    </a>
                                 </figure>
                             </div>
                             <div class="media-content">
@@ -64,18 +70,28 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <figure class="image is-32x32" style="top: 0.25rem;">
-                                                    {% if com.author.picture %}
-                                                        <img src="{{ com.author.picture }}" alt="Placeholder image"
-                                                             style="border-radius: 10px; ">
-                                                    {% else %}
-                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbXaq_lCQk5x5PlW8a2ZIlgjLqt9e-TUZQWmGh3t7V1Kij7pZFjg"
-                                                             alt="Default" style="border-radius: 10px;">
-                                                    {% endif %}
+                                                    <a href="{{ path('users_show', {'id': com.author.id}) }}">
+                                                        {% if com.author.picture %}
+                                                            <img src="{{ com.author.picture }}" alt="Placeholder image"
+                                                                 style="border-radius: 10px; ">
+                                                        {% else %}
+                                                            <img src="{{ asset('dist/imgs/default.png') }}"
+                                                                 alt="Default" style="border-radius: 10px;">
+                                                        {% endif %}
+                                                    </a>
                                                 </figure>
                                             </div>
                                             <div class="media-content">
                                                 <p class="subtitle is-8">{{ com.author.duckName }}</p>
                                             </div>
+                                            {% if app.user %}
+                                                {% if app.user.id == com.author.id %}
+                                                    <a href="{{ path('deleteComentaire',{'idContent': com.id, 'commentaire': true}) }}">
+                                                        <img src="{{ asset('dist/imgs/bin.svg') }}" alt="go to comment"
+                                                             class="image is-24x24">
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
 
                                         <div class="content">
@@ -90,20 +106,20 @@
                         {% endif %}
                     {% endfor %}
                     {% if app.user %}
-                    <div>
-                        <img src="{{ asset('/dist/imgs/arrow.png') }}" alt="arrow" style="left: -3rem;">
-                    </div>
-                    <div class="field">
-                        <form action="{{ path('Content') }}" method="post">
-                            <div class="control">
-                                <input type="hidden" value="{{ content.id }}" name="parent">
-                                <input class="input is-success is-rounded " type="text" placeholder="Coinmentaire"
-                                       style="text-align: center;" name="content" id="{{ content.id }}">
-                            </div>
-                        </form>
+                        <div>
+                            <img src="{{ asset('/dist/imgs/arrow.png') }}" alt="arrow" style="left: -3rem;">
+                        </div>
+                        <div class="field">
+                            <form action="{{ path('Content') }}" method="post">
+                                <div class="control">
+                                    <input type="hidden" value="{{ content.id }}" name="parent">
+                                    <input class="input is-success is-rounded " type="text" placeholder="Coinmentaire"
+                                           style="text-align: center;" name="content" id="{{ content.id }}">
+                                </div>
+                            </form>
 
-                    </div>
-                        {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

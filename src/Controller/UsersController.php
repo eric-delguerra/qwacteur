@@ -72,13 +72,17 @@ class UsersController extends AbstractController
      */
     public function edit(Request $request, Users $user): Response
     {
+
         $form = $this->createForm(UsersType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $userId = $request->get('id');
 
-            return $this->redirectToRoute('users_index');
+            return $this->redirectToRoute('users_show', [
+                'id' => $userId
+            ]);
         }
 
         return $this->render('users/edit.html.twig', [
@@ -89,6 +93,9 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/{id}", name="users_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Users $user
+     * @return Response
      */
     public function delete(Request $request, Users $user): Response
     {
@@ -100,4 +107,5 @@ class UsersController extends AbstractController
 
         return $this->redirectToRoute('users_index');
     }
+
 }

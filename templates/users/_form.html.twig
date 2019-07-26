@@ -1,4 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="button is-success" style="margin-top: 1rem">{{ button_label|default('Save') }}</button>
+    <button class="button is-success is-rounded" style="margin-top: 1rem; display: inline">{{ button_label|default('Enregistrer') }}</button>
+{#<a href="{{ path('users_index') }}"><input type="submit" class="button is-success" value="Revenir aux utilisateurs" style="margin-top: 1rem; display: inline"></a>#}
+
 {{ form_end(form) }}

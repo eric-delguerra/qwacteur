@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Content;
 use DateTime;
 use DateTimeZone;
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -104,5 +104,44 @@ class ContentController extends AbstractController
             'content' => $content,
             'contents' => $contents
         ]));
+    }
+
+    /**
+     * @param $idContent
+     * @param ValidatorInterface $validator
+     * @param bool $commentaire
+     * @return Response
+     * @Route ("/delete/comment/{idContent}", name="deleteComentaire")
+     */
+
+    public function deleteContent($idContent, ValidatorInterface $validator, $commentaire = false){
+//        dd($idContent);
+        if ($commentaire == false){
+            $this->addFlash(
+                'notice',
+                'Votre post est supprimé'
+            );
+            $contents = $this->getDoctrine()->getRepository(Content::class)->findChildren($idContent);
+            $post = $this->getDoctrine()->getRepository(Content::class)->find($idContent);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($post);
+            foreach ($contents as $content) {
+                $entityManager->remove($content);
+            }
+            $entityManager->flush();
+        } else {
+            $post = $this->getDoctrine()->getRepository(Content::class)->find($idContent);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($post);
+            $entityManager->flush();
+        }
+
+
+        $errors = $validator->validate($contents);
+        if (count($errors) > 0) {
+            return new Response((string)$errors, 400);
+        } else {
+            return $this->redirectToRoute('Home');
+        }
     }
 }

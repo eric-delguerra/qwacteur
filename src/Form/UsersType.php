@@ -26,7 +26,8 @@ class UsersType extends AbstractType
             ->add('picture', TextType::class, [
                 'label' => 'Image',
                 'attr' =>['class' => 'input is-success column is-two-fifths is-rounded',
-                    'style' => ' text-align: center']
+                    'style' => ' text-align: center'],
+                'required' => false
             ])
             ->add('duckname', TextType::class, [
                 'label' => 'Nom de canard',
