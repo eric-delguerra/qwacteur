@@ -29,14 +29,10 @@
                     <th>Duckname</th>
                     <td>{{ user.duckname }}</td>
                 </tr>
-                {% if user.id == app.user.id %}
+                {% if app.user and user.id == app.user.id %}
                 <tr>
                     <th>E.Mail</th>
                     <td>{{ user.mail }}</td>
-                </tr>
-                <tr>
-                    <th>Password</th>
-                    <td>{{ user.password }}</td>
                 </tr>
                 {% endif %}
                 </tbody>
@@ -47,7 +43,7 @@
             <a href="{{ path('Home') }}">
                 <input type="submit" class="input is-rounded show" value="Revenir à l'acceuil" style="width: 25%;">
             </a>
-            {% if user.id == app.user.id %}
+            {% if app.user and user.id == app.user.id %}
             <a href="{{ path('users_edit', {'id': user.id}) }}"><input type="submit" class="input is-rounded edit"
                                                                        value="Editer" style="width: 15%;"></a>
             {% endif %}

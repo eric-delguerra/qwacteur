@@ -25,32 +25,11 @@ class ContentRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
-    // /**
-    //  * @return Content[] Returns an array of Content objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function findAllWithUsers(){
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.author', 'u')
+            ->addSelect('u');
+        return $qb->getQuery()
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Content
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

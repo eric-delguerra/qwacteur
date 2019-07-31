@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Content;
 use App\Entity\Tags;
 use App\Form\TagsType;
 use App\Repository\TagsRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagsController extends AbstractController
 {
     /**
-     * @Route("/", name="tags_index", methods={"GET"})
+     * @Route("/tags", name="tags_index", methods={"GET"})
+     * @param TagsRepository $tagsRepository
+     * @return Response
      */
     public function index(TagsRepository $tagsRepository): Response
     {
@@ -27,6 +31,8 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/new", name="tags_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +56,8 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}", name="tags_show", methods={"GET"})
+     * @param Tags $tag
+     * @return Response
      */
     public function show(Tags $tag): Response
     {
@@ -60,6 +68,9 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="tags_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Tags $tag
+     * @return Response
      */
     public function edit(Request $request, Tags $tag): Response
     {
@@ -80,6 +91,9 @@ class TagsController extends AbstractController
 
     /**
      * @Route("/{id}", name="tags_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Tags $tag
+     * @return Response
      */
     public function delete(Request $request, Tags $tag): Response
     {
@@ -90,5 +104,16 @@ class TagsController extends AbstractController
         }
 
         return $this->redirectToRoute('tags_index');
+    }
+
+    /**
+     * @Route("/full", name="tagsRetrieve", methods={"GET","POST"})
+     * @param Content $content
+     * @param ObjectManager $manager
+     * @param TagsRepository $tagsRepository
+     * @return Response
+     */
+    public function tags(): Response{
+        return $this->json(['code' => 200, 'message' => 'Ca marche bien'], 200);
     }
 }

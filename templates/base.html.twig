@@ -11,7 +11,7 @@
 </head>
 <body>
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" style="background-color: transparent">
-    <div class="navbar-brand is-offset-one-quarter ">
+    <div class="navbar-brand ">
         <a class="navbar-item" href="{{ path('Home') }}">
             <img src="{{ asset('dist/imgs/logoDuck.png') }}" style="max-height: 5rem;" alt="logo">
         </a>
@@ -22,23 +22,28 @@
             <span aria-hidden="true"></span>
         </a>
     </div>
-    <div class="navbar-menu">
-        <div class="navbar-end">
-            <div class="navbar-item">
-                {% if app.user %}
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-menu">
+            <div class="navbar-start">
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    {% if app.user %}
                     <a href="{{ path('users_show', {'id': app.user.id}) }}">
-                    {% if app.user.picture %}
-                        <img src="{{ app.user.picture }}" alt="profile picture" class="image is-32x32"
-                             style="border-radius: 10px; margin-right: 0.7rem">
-                    {% else %}
-                        <img src="{{ asset('dist/imgs/default.png') }}" alt="profile picture" class="image is-32x32"
-                             style="border-radius: 10px; margin-right: 0.7rem">
-                    {% endif %}
+                        {% if app.user.picture %}
+                            <img src="{{ app.user.picture }}" alt="profile picture" class="image is-32x32"
+                                 style="border-radius: 10px;">
+                        {% else %}
+                            <img src="{{ asset('dist/imgs/default.png') }}" alt="profile picture" class="image is-32x32"
+                                 style="border-radius: 10px;">
+                        {% endif %}
                     </a>
-                <div>
+                </div>
+                <div class="navbar-item">
                     <a class="button is-rounded nav-but" href="{{ path('users_show', {'id': app.user.id}) }}">
-                            <strong>{{ app.user.duckName|upper }}</strong>
-                        </a>
+                        <strong>{{ app.user.duckName|upper }}</strong>
+                    </a>
                     {% else %}
                         <a class="button is-rounded nav-but" href="{{ path('users_new') }}">
                             <strong>Sign up</strong>

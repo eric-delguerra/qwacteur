@@ -15,14 +15,14 @@
 /*}*/
 #content:focus{
     background: rgba(175, 247, 183, 0.37);
-    border-color: rgba(175, 247, 183, 0.37);
-    border-radius: 20px;
+    border-color: rgba(162, 230, 172, 0.67);
+    border-radius: 50px;
 }
 
 #SubACoin{
     color: #f06949;
     border-color: #f06949;
-    margin-top: -10px;
+    margin-top: -2.5rem;
     transition-duration: 0.6s;
 }
 
@@ -106,4 +106,13 @@ input::placeholder {
 .profile {
     /*border: solid black;*/
     box-shadow: 0 2px 3px rgb(28, 206, 28), 0 0 0 2px rgba(227, 136, 12, 0.84);
+}
+
+#upload{
+    background-color: rgba(58,221,129,0.22);
+    transition-duration: 0.4s;
+}
+
+#upload:hover{
+    background-color: rgba(58, 221, 129, 0.66)
 }

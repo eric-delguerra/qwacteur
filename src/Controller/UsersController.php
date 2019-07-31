@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\UsersType;
 use App\Repository\UsersRepository;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/users")
@@ -27,12 +29,15 @@ class UsersController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/new", name="users_new", methods={"GET","POST"})
      * @param Request $request
+     * @param Swift_Mailer $mailer
      * @return Response
      */
-    public function new(Request $request): Response
+
+    public function new(Request $request, Swift_Mailer $mailer): Response
     {
         $user = new Users();
         $form = $this->createForm(UsersType::class, $user);
@@ -40,6 +45,24 @@ class UsersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+//            $encoded = $encoder->encodePassword($user, $user->getPassword());
+
+
+            $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('raymond.du.campus@gmail.com')
+                ->setTo('raymond.du.campus@gmail.com')
+                ->setBody(
+                    $this->renderView(
+                    // templates/emails/registration.html.twig
+                        'emails/registration.html.twig',
+                        ['name' => $user->getName()]
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+
+//            $user->setPassword($encoded);
             $entityManager->persist($user);
             $entityManager->flush();
 

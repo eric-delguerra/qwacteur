@@ -78,8 +78,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just return true
+        if ($credentials['password'] == $user->getPassword()){
+            return true;
+        }
 
-        return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
